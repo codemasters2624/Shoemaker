@@ -1,12 +1,10 @@
-import con from '../database/db';
+import { getShoes, addshoes } from '../database/storedprocedure';
 
 export const showShoes = async (req, res) => {
 	try {
-		let result = await con.execute(`CALL sp_show_shoes()`);
-		result = result.flat();
-		console.log(`result`, result[0]);
+		let result = await getShoes();
 		res.json({
-			msg: result[0],
+			msg: result,
 		});
 	} catch (error) {
 		console.error(error);
@@ -68,14 +66,27 @@ export const addShoes = async (req, res) => {
 				total_quantity
 			);
 
-			let addShoes = await con.execute(
-				`Call sp_add_shoes(${s_name},${s_type},${size},${color},${price},${bid},${is_special},${available},${total_quantity})`
-			);
+			let shoes = await addshoes({
+				s_name,
+				s_type,
+				size,
+				color,
+				price,
+				bid,
+				is_special,
+				available,
+				total_quantity,
+			});
 			res.json({
-				msg: 'addInventory',
+				msg: shoes,
 			});
 		}
 	} catch (error) {
 		console.error(error);
 	}
+};
+
+export const searchItem = async (req, res) => {
+	const keyword = req.query;
+	console.log(keyword);
 };

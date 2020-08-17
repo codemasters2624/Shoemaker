@@ -1,5 +1,10 @@
 import express from 'express';
-import { showShoes, showBoots, addShoes } from '../controllers/controller';
+import {
+	showShoes,
+	showBoots,
+	addShoes,
+	searchItem,
+} from '../controllers/controller';
 
 const router = express.Router();
 
@@ -15,4 +20,5 @@ router.post('/add_shoes', addShoes);
 // //To add Belt to inventory
 // router.post('/add_belt', addBelt);
 
+router.get('/search_item', searchItem);
 export default router;
