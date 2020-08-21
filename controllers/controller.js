@@ -7,10 +7,17 @@ import {
 	findbelt,
 	purchaseshoes,
 	purchasebelt,
+	updateshoes,
+	updatebelt,
+	deleteshoes,
+	deletebelt,
 } from '../database/storedprocedure';
+
+import axios from 'axios';
 
 export const showShoes = async (req, res) => {
 	try {
+		let id = req.query;
 		let result = await getShoes();
 		res.json({
 			response_code: '0000',
@@ -20,7 +27,7 @@ export const showShoes = async (req, res) => {
 		console.error(error);
 		res.json({
 			response_code: '9999',
-			respobse_message: 'Error!',
+			response_message: 'Error!',
 		});
 	}
 };
@@ -239,6 +246,158 @@ export const purchaseBelt = async (req, res) => {
 					response_message: 'Purchase successful.',
 				});
 			}
+		}
+	} catch (error) {
+		console.error(error);
+		res.json({
+			response_code: '9999',
+			response_message: 'Something went wrong!',
+		});
+	}
+};
+
+export const updateBelt = async (req, res) => {
+	try {
+		let {
+			b_name,
+			b_type,
+			size,
+			color,
+			price,
+			buckle_type,
+			available,
+			total_quantity,
+		} = req.body;
+
+		let id = req.params.id;
+
+		let shoes = await getbelt({ id });
+		if (shoes == '' || shoes == undefined || shoes == null) {
+			res.json({
+				response_code: '1004',
+				response_message: 'Item not found!',
+			});
+		} else {
+			await updatebelt({
+				id: id ? id : null,
+				b_name: b_name ? b_name : null,
+				b_type: b_type ? b_type : null,
+				size: size ? size : null,
+				color: color ? color : null,
+				price: price ? price : null,
+				buckle_type: buckle_type ? buckle_type : null,
+				available: available ? available : null,
+				total_quantity: total_quantity ? total_quantity : null,
+			});
+			res.json({
+				response_code: '0000',
+				response_message: 'Successfully Updated',
+			});
+		}
+	} catch (error) {
+		console.error(error);
+		res.json({
+			response_code: '9999',
+			response_message: 'Something went wrong!',
+		});
+	}
+};
+
+export const updateShoes = async (req, res) => {
+	try {
+		let {
+			s_name,
+			s_type,
+			size,
+			color,
+			price,
+			bid,
+			is_special,
+			available,
+			total_quantity,
+		} = req.body;
+
+		let id = req.params.id;
+
+		let shoes = await getShoes({ id });
+		if (shoes == '' || shoes == undefined || shoes == null) {
+			res.json({
+				response_code: '1004',
+				response_message: 'Item not found!',
+			});
+		} else {
+			await updateshoes({
+				id: id ? id : null,
+				s_name: s_name ? s_name : null,
+				s_type: s_type ? s_type : null,
+				size: size ? size : null,
+				color: color ? color : null,
+				price: price ? price : null,
+				bid: bid ? bid : null,
+				is_special: is_special ? is_special : null,
+				available: available ? available : null,
+				total_quantity: total_quantity ? total_quantity : null,
+			});
+			res.json({
+				response_code: '0000',
+				response_message: 'Successfully Updated',
+			});
+		}
+	} catch (error) {
+		console.error(error);
+		res.json({
+			response_code: '9999',
+			response_message: 'Something went wrong!',
+		});
+	}
+};
+
+export const deleteShoes = async (req, res) => {
+	try {
+		let id = req.params.id;
+
+		let shoes = await getShoes({ id });
+		if (shoes == '' || shoes == undefined || shoes == null) {
+			res.json({
+				response_code: '1004',
+				response_message: 'Item not found!',
+			});
+		} else {
+			await deleteshoes({
+				id: id ? id : null,
+			});
+			res.json({
+				response_code: '0000',
+				response_message: 'Successfully Deleted',
+			});
+		}
+	} catch (error) {
+		console.error(error);
+		res.json({
+			response_code: '9999',
+			response_message: 'Something went wrong!',
+		});
+	}
+};
+
+export const deleteBelt = async (req, res) => {
+	try {
+		let id = req.params.id;
+
+		let shoes = await getbelt({ id });
+		if (shoes == '' || shoes == undefined || shoes == null) {
+			res.json({
+				response_code: '1004',
+				response_message: 'Item not found!',
+			});
+		} else {
+			await deletebelt({
+				id: id ? id : null,
+			});
+			res.json({
+				response_code: '0000',
+				response_message: 'Successfully Deleted',
+			});
 		}
 	} catch (error) {
 		console.error(error);

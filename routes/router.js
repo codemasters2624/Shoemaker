@@ -8,6 +8,10 @@ import {
 	searchBelt,
 	purchaseShoes,
 	purchaseBelt,
+	updateShoes,
+	updateBelt,
+	deleteShoes,
+	deleteBelt,
 } from '../controllers/controller';
 
 const router = express.Router();
@@ -32,5 +36,12 @@ router.get('/purchase_shoes', purchaseShoes);
 
 router.get('/purchase_belt', purchaseBelt);
 
-// router.get('/search_belt', searchBelt);
+router.post('/update_shoes/:id', updateShoes);
+
+router.post('/update_belt/:id', updateBelt);
+
+router.delete('/delete_shoes/:id', deleteShoes);
+
+router.delete('/delete_belt/:id', deleteBelt);
+
 export default router;

@@ -104,3 +104,60 @@ export const purchasebelt = async (values) => {
 		console.error(error);
 	}
 };
+
+export const updatebelt = async (values) => {
+	try {
+		const query =
+			`CALL sp_update_belt(` +
+			`"${values.id}",` +
+			`"${values.b_name}",` +
+			`"${values.b_type}",` +
+			`"${values.size}",` +
+			`"${values.color}",` +
+			`"${values.price}",` +
+			`"${values.buckle_type}",` +
+			`"${values.available}",` +
+			`"${values.total_quantity}")`;
+		let result = await con.execute(query);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export const updateshoes = async (values) => {
+	try {
+		const query =
+			`CALL sp_update_shoes(` +
+			`"${values.id}",` +
+			`"${values.s_name}",` +
+			`"${values.s_type}",` +
+			`"${values.size}",` +
+			`"${values.color}",` +
+			`"${values.price}",` +
+			`"${values.is_special}",` +
+			`${values.bid},` +
+			`"${values.available}",` +
+			`"${values.total_quantity}")`;
+		let result = await con.execute(query);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export const deleteshoes = async (values) => {
+	try {
+		const query = `CALL sp_delete_shoes("${values.id}")`;
+		let result = await con.execute(query);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export const deletebelt = async (values) => {
+	try {
+		const query = `CALL sp_delete_belt("${values.id}")`;
+		let result = await con.execute(query);
+	} catch (error) {
+		console.error(error);
+	}
+};
