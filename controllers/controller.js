@@ -91,9 +91,10 @@ export const addShoes = async (req, res) => {
 				available: available ? available : null,
 				total_quantity: total_quantity ? total_quantity : null,
 			});
+
 			res.json({
 				response_code: '0000',
-				response_message: shoes,
+				response_message: 'Shoes added Successfully',
 			});
 		}
 	} catch (error) {
@@ -129,10 +130,9 @@ export const addBelt = async (req, res) => {
 			total_quantity: total_quantity ? total_quantity : null,
 		});
 
-		let newInv = await getbelt();
 		res.json({
 			response_code: '0000',
-			response_message: newInv,
+			response_message: 'Belt Added Successfully',
 		});
 	} catch (error) {
 		console.error(error);
@@ -190,7 +190,7 @@ export const purchaseShoes = async (req, res) => {
 		} else if (quantity === null || quantity === undefined || quantity === '') {
 			res.json({
 				response_code: '1020',
-				response_message: 'quantity cannot be null',
+				response_message: 'Quantity cannot be null',
 			});
 		}
 
@@ -206,7 +206,7 @@ export const purchaseShoes = async (req, res) => {
 			if (quantity > check[0].available) {
 				res.json({
 					response_code: '1002',
-					response_message: 'Required Amount is exceeds avaiable stock.',
+					response_message: 'Required Amount exceeds avaiable stock.',
 				});
 			} else {
 				let remains = check[0].available - quantity;
@@ -355,7 +355,7 @@ export const updateShoes = async (req, res) => {
 		} = req.body;
 
 		let id = req.params.id;
-
+		console.log(`id`, id);
 		let shoes = await getShoes({ id });
 		if (shoes == '' || shoes == undefined || shoes == null) {
 			res.json({

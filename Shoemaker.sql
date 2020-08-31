@@ -31,14 +31,17 @@ CREATE TABLE `belt` (
   `total_quantity` int unsigned DEFAULT NULL,
   `available` int unsigned DEFAULT NULL,
   PRIMARY KEY (`bid`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `belt` */
 
 insert  into `belt`(`bid`,`b_name`,`b_type`,`size`,`color`,`price`,`buckle_type`,`total_quantity`,`available`) values 
-(100,'Gucci','Premium','L','Black',1000,'Gold',200,0),
+(100,'Armani','Casual','L','Brown',10000,'Steel',2500,100),
 (101,'Prada','Luxury','M','Brown',20000,'Silver',500,499),
-(111,'Gucci','Leather','L','Brown',21000,'Metal',4000,3000);
+(112,'Gucci','Casual','L','Brown',20010,'Metal',200,100),
+(113,'Gucci','Casual','L','Brown',20010,'Metal',200,100),
+(114,'Gucci','Casual','L','Brown',20010,'Metal',200,100),
+(115,'Gucci','Casual','L','Brown',20010,'Metal',200,100);
 
 /*Table structure for table `shoes` */
 
@@ -56,16 +59,16 @@ CREATE TABLE `shoes` (
   `available` int unsigned DEFAULT NULL,
   `total_quantity` int unsigned DEFAULT NULL,
   PRIMARY KEY (`sid`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `shoes` */
 
 insert  into `shoes`(`sid`,`s_name`,`s_type`,`size`,`color`,`price`,`is_special`,`bid`,`available`,`total_quantity`) values 
-(100,'Armani','Loafers',8,'Blue',20000,'Y',100,0,100),
 (101,'Gucci','Joggers',20,'Purple',50000,'N',NULL,200,3000),
 (102,'Reebok Xpendables','Joggers',40,'Bluish Orange',23000,'N',NULL,3000,3000),
 (103,'Reebok Xpendables','Joggers',40,'Bluish Orange',23000,'N',NULL,3000,4000),
-(104,'Rimba','Loafers',38,'Red',25000,'N',NULL,20,20);
+(104,'Rimba','Loafers',38,'Red',25000,'N',NULL,20,20),
+(105,'Nike','Joggers',24,'White',20000,'Y',102,200,200);
 
 /* Procedure structure for procedure `sp_add_belt` */
 
@@ -147,6 +150,30 @@ p_available,
 p_total_quantity
 );
 END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `sp_delete_belt` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `sp_delete_belt` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_belt`(p_bid int unsigned)
+BEGIN
+	delete from belt where bid = p_bid;
+	END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `sp_delete_shoes` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `sp_delete_shoes` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_shoes`(p_sid int unsigned)
+BEGIN
+	delete from shoes where sid = p_sid;
+	END */$$
 DELIMITER ;
 
 /* Procedure structure for procedure `sp_find_belt` */
@@ -236,6 +263,75 @@ ELSE
 SELECT * from shoes where sid = p_sid;
 END IF;
 END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `sp_update_belt` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `sp_update_belt` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_belt`(
+			p_bid INT UNSIGNED,
+			p_b_name VARCHAR(100),
+			p_b_type VARCHAR(100),
+			p_size char(1),
+			p_color VARCHAR(100),
+			p_buckle_type VARCHAR(100),
+			p_price DOUBLE UNSIGNED,
+			p_available INT UNSIGNED,
+			p_total_quantity INT UNSIGNED)
+BEGIN
+	UPDATE belt
+	SET
+	 
+	 b_name = p_b_name,
+	 b_type = p_b_type,
+	 size = p_size,
+	 color = p_color,
+ 	 price = p_price,
+	 buckle_type = p_buckle_type,
+	 available = p_available,
+	 total_quantity = p_total_quantity
+	 WHERE
+	 bid = p_bid;
+	END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `sp_update_shoes` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `sp_update_shoes` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_shoes`(
+			p_sid int unsigned,
+			p_s_name varchar(100),
+			p_s_type varchar(100),
+			p_size int unsigned,
+			p_color varchar(100),
+			p_price double unsigned,
+			p_bid int unsigned,
+			p_is_special char(1),
+			p_available int unsigned,
+			p_total_quantity int unsigned
+			)
+BEGIN
+	update shoes
+	set
+	 
+	 s_name = p_s_name,
+	 s_type = p_s_type,
+	 size = p_size,
+	 color = p_color,
+ 	 price = p_price,
+	 bid = p_bid,
+	 is_special = p_is_special,
+	 available = p_available,
+	 total_quantity = p_total_quantity
+	 where
+	 sid = p_sid;
+	END */$$
 DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

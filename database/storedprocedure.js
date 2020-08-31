@@ -45,6 +45,7 @@ export const addshoes = async (values) => {
 
 export const addbelt = async (values) => {
 	try {
+		console.log(`values`, values);
 		const query =
 			`CALL sp_add_belt("${values.b_name}",` +
 			`"${values.b_type}",` +
@@ -115,8 +116,8 @@ export const updatebelt = async (values) => {
 			`"${values.b_type}",` +
 			`"${values.size}",` +
 			`"${values.color}",` +
-			`"${values.price}",` +
 			`"${values.buckle_type}",` +
+			`"${values.price}",` +
 			`"${values.available}",` +
 			`"${values.total_quantity}")`;
 		let result = await con.execute(query);
@@ -135,8 +136,8 @@ export const updateshoes = async (values) => {
 			`"${values.size}",` +
 			`"${values.color}",` +
 			`"${values.price}",` +
-			`"${values.is_special}",` +
 			`${values.bid},` +
+			`"${values.is_special}",` +
 			`"${values.available}",` +
 			`"${values.total_quantity}")`;
 		let result = await con.execute(query);
