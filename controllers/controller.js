@@ -17,8 +17,10 @@ import axios from 'axios';
 
 export const showShoes = async (req, res) => {
 	try {
-		let id = req.query;
-		let result = await getShoes();
+		const { id } = req.query;
+		let result = await getShoes({
+			id: id ? id : null,
+		});
 		res.json({
 			response_code: '0000',
 			response_message: result,
@@ -34,7 +36,10 @@ export const showShoes = async (req, res) => {
 
 export const showBelt = async (req, res) => {
 	try {
-		let result = await getbelt();
+		const { id } = req.query;
+		let result = await getbelt({
+			id: id ? id : null,
+		});
 		res.json({
 			response_code: '0000',
 			response_message: result,
@@ -177,8 +182,21 @@ export const searchBelt = async (req, res) => {
 export const purchaseShoes = async (req, res) => {
 	try {
 		const { id: id, quantity: quantity } = req.query;
-		const check = await getShoes({ id: id ? id : null });
-		console.log(check);
+		if (id === null || id === undefined || id === '') {
+			res.json({
+				response_code: '1020',
+				response_message: 'Id cannot be null',
+			});
+		} else if (quantity === null || quantity === undefined || quantity === '') {
+			res.json({
+				response_code: '1020',
+				response_message: 'quantity cannot be null',
+			});
+		}
+
+		console.log(`id`, id, `quantity`, quantity);
+		const check = await getShoes({ id: id });
+		console.log(`check`, check);
 		if (check == '' || check == undefined || check == null) {
 			res.json({
 				response_code: '1003',
@@ -194,16 +212,23 @@ export const purchaseShoes = async (req, res) => {
 				let remains = check[0].available - quantity;
 				if (check[0].is_special === 'Y') {
 					let bid = check[0].bid;
-					console.log(remains);
-					await purchasebelt({ bid, quantity });
-					await purchaseshoes({ id, remains });
+					console.log(`remains`, remains, `bid`, bid);
+					console.log(
+						`http://localhost:5000/purchase_belt?bid=${bid}&quantity=${quantity}`
+					);
+					const { data: data } = await axios.get(
+						`http://localhost:5000/purchase_belt?id=${bid}&quantity=${quantity}`
+					);
+
+					console.log(`response_message`, data);
+					await purchaseshoes({ id, quantity });
 					await res.json({
 						response_code: '0000',
-						response_message: 'Purchase successful.',
+						response_message: 'Purchase Successful',
 					});
 				} else {
-					console.log(remains);
-					await purchaseshoes({ id, remains });
+					console.log(`quantity`, quantity);
+					await purchaseshoes({ id, quantity });
 					res.json({
 						response_code: '0000',
 						response_message: 'Purchase successful.',
@@ -223,7 +248,19 @@ export const purchaseShoes = async (req, res) => {
 export const purchaseBelt = async (req, res) => {
 	try {
 		const { id: id, quantity: quantity } = req.query;
-		const check = await getbelt({ id: id ? id : null });
+		if (id === null || id === undefined || id === '') {
+			res.json({
+				response_code: '1234',
+				response_message: 'ID cannot be null',
+			});
+		} else if (id === null || id === undefined || id === '') {
+			res.json({
+				response_code: '1320',
+				response_message: 'Quantity cannot be null',
+			});
+		}
+		const check = await getbelt({ id });
+		console.log(`id`, id, `quantity`, quantity);
 		console.log(check);
 		console.log(check[0].available);
 		if (check == '' || check == undefined || check == null) {
@@ -239,8 +276,8 @@ export const purchaseBelt = async (req, res) => {
 				});
 			} else {
 				let remains = check[0].available - quantity;
-				console.log(remains);
-				await purchasebelt({ id, remains });
+				console.log(`Remaining Belts`, remains);
+				await purchasebelt({ id, quantity });
 				res.json({
 					response_code: '0000',
 					response_message: 'Purchase successful.',

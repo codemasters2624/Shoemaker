@@ -2,6 +2,7 @@ import con from './db';
 
 export const getShoes = async (values) => {
 	try {
+		console.log(values.id);
 		const shoes = await con.execute(`CALL sp_show_shoes(${values.id})`);
 		const result = shoes.flat();
 
@@ -85,7 +86,7 @@ export const findbelt = async (values) => {
 
 export const purchaseshoes = async (values) => {
 	try {
-		const query = `CALL sp_purchase_shoes("${values.id}", "${values.remains}")`;
+		const query = `CALL sp_purchase_shoes("${values.id}", "${values.quantity}")`;
 		let result = await con.execute(query);
 
 		// console.log(query);
@@ -96,7 +97,7 @@ export const purchaseshoes = async (values) => {
 
 export const purchasebelt = async (values) => {
 	try {
-		const query = `CALL sp_purchase_belt("${values.id}", "${values.remains}")`;
+		const query = `CALL sp_purchase_belt("${values.id}", "${values.quantity}")`;
 		let result = await con.execute(query);
 
 		// console.log(query);
